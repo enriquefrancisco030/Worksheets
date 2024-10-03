@@ -1,0 +1,101 @@
+---
+title: "RWorksheet_Francisco#3a"
+author: "Enrique E. Francisco"
+date: "2024-09-30"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#1a
+A <- LETTERS[1:11]
+A
+#1b
+Odd <- LETTERS[seq(1, 26, by=2)]
+Odd
+#1c
+Let <- LETTERS[c(1,5,9,15,21)]
+Let
+#1d
+Last <- tail(letters, 5)
+Last
+#1e
+Low <- letters[15:24]
+Low
+```
+
+```{r}
+#2a
+city <- c("Tuguegarao City", "Manila", "Iloilo City", "Tacloban", "Samal Island", "Davao City")
+#2b
+temp <- c(42, 39, 34, 34, 30, 27 )
+#2c : The vectors was combined to make a table
+Fuse <- data.frame(city, temp)
+#2d : The city was changed into City and temp into Temperature
+names(Fuse) <- c("City", "Temperature")
+#2e : It displays the structure of the data frame
+str(Fuse)
+#2f: Iloilo City:34, Tacloban:34
+Fin <- Fuse[3:4,]
+Fin
+#2g
+max(Fuse$City)
+min(Fuse$City)
+# max(Fuse$City)
+#[1] "Tuguegarao City"
+# min(Fuse$City)
+#[1] "Davao City"
+```
+
+
+#MATRIX
+```{r}
+#2.a
+mat <- matrix(c(1:8,11:14), ncol=4, nrow=3)
+mat
+#2.b
+mult_mat <- mat * 2
+mult_mat
+#2.c
+row2 <- mat[2,]
+row2
+#2.d
+dis1 <- mat[1:2, 3:4]
+dis1
+#2.e
+dis2 <- mat[3,2:3]
+dis2
+#2.f
+dis3 <- mat[,4]
+dis3
+#2.g
+dimnames(mult_mat) <- list(c("isa", "dalawa", "tatlo"), c("uno", "dos", "tres", "quatro"))
+mult_mat
+#2.h
+dim(mat) <- c(6,2)
+mat
+```
+
+#ARRAY
+```{r}
+#3.a
+num <- c(1, 2, 3, 6, 7, 8, 9, 0, 3, 4, 5, 1)
+num
+nums <- rep(num, 2)
+nums
+array_num <- array(nums, dim = c(2,4,3))
+array_num
+#3.b
+dim(array_num)
+#3.c
+arg1 <- c("a","b")
+arg2 <- c("A", "B", "C", "D")
+mate <- c("1st-Dimensional Array", "2nd-Dimensional Array","3rd-Dimensional Array")
+modified <- array(array_num,dim = c(2,4,3),dimnames = list(arg1,arg2,mate))
+modified 
+```
+
+
