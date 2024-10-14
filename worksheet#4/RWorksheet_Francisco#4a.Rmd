@@ -1,0 +1,87 @@
+---
+title: "RWorksheet_Francisco#4a"
+author: "Enrique Francisco"
+date: "2024-10-14"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#1.
+Household_data <- read.csv("/cloud/project/worksheet#4/Household Data.csv")
+Household_data
+```
+#1.a: The data has 28 objects with 3 variables:Shoe size, Height and Gender
+```{r}
+#1.b
+sub1 <- subset(Household_data, Gender == "M" & Shoe.size&Height)
+sub1
+```
+
+```{r}
+#1.b
+sub2 <- subset(Household_data, Gender == "F" & Shoe.size&Height)
+sub2
+```
+
+```{r}
+#1.c
+mean1 <- mean(Household_data$Shoe.size)
+mean1
+mean2 <- mean(Household_data$Height)
+mean2
+```
+
+#1.d: Based on the given data if we compare the Male and Female proportion about shoe size and height, there's a big difference for Male because as the Height of Males increase the shoe size also increases while on the other hand Females vary from shoe sizes as there's some who is much shorter than other but have bigger shoe sizes
+```{r}
+#2
+Months <- c("March", "April" ,"January" ,"November" ,"January", "September","October","September","November","August","January","November","November","February","May","August","July","December","August","August","September","November","February","April")
+
+factor_months_vector <- factor(Months)
+factor_months_vector
+```
+
+```{r}
+#3
+Sum <- summary(Months)
+Sum
+Sum2 <- summary(factor_months_vector)
+Sum2
+```
+
+```{r}
+#4
+Datas <- c(c("East", "West", "North"), c(1,4,3))
+Datas
+factor_data <- matrix(Datas,nrow=3,ncol=2)
+factor_data
+```
+
+
+```{r}
+#4
+colnames(factor_data) <- c("Direction", "Frequency")
+factor_data
+```
+
+```{r}
+#4
+new_order_data <- factor(factor_data,levels = c("East","West","North"))
+print(new_order_data)
+```
+
+```{r}
+#5a
+setwd("/cloud/project/worksheet#4")
+Strats <- read.table("import_march.csv", header= TRUE, sep = ",")
+Strats
+```
+
+```{r}
+#5b: The 1,2,3 resulted in NA because those values are missing and did not matched the specified levels
+Strats
+```
+
