@@ -1,0 +1,196 @@
+---
+title: "RWorksheet_Francisco#4c"
+author: "Enrique Francisco"
+date: "2024-11-04"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#1a
+MPG <- read.csv("/cloud/project/worksheet#4/mpg.csv")
+MPG
+#1b
+# The manufacturer, model, rans, drv, fl, and class
+#1c
+# The display, cty and hwy
+```
+
+```{r}
+#2
+car_manufacturer <- table(MPG$manufacturer)
+car_model <- table(MPG$model)
+# The manufacturer that has the most models is dodge with 37 models.
+# The model that has the most variations is caravan 2wd with 11 variations.
+```
+
+```{r}
+#2a
+library("dplyr")
+unique_model <- MPG %>%
+ group_by(manufacturer) %>%
+ summarise(models = n_distinct(model))
+unique_model
+```
+
+```{r}
+#2b
+library(ggplot2)
+unique_model$manufacturer <- as.factor(unique_model$manufacturer)
+unique_model$models <- as.numeric(unique_model$models)
+
+plot(unique_model$manufacturer, unique_model$models,
+     type = "p",
+     col = "blue",
+     main = "Number of Unique Models per Manufacturer",
+     xlab = "Manufacturer",
+     ylab = "Unique Model Count",
+     las = 3)
+ggplot(unique_model, aes(manufacturer, models), y = models) +
+  geom_bar(stat = "identity", fill = "lightblue", color = "red") +
+  labs(title = "Number of Unique Models per Manufacturer", x = "Manufacturer", y = "Unique Model Count")
+```
+
+```{r}
+#2.2a
+#The data was presented using points
+library(ggplot2)
+ggplot(unique_model, aes(manufacturer, models), y = models) +
+  geom_point( color = "lightgreen")
+
+#2.2b
+#It is very useful as it can make the data easier to read and make it clearer to analyze it if there's visuals
+```
+
+```{r}
+#3
+top_MPG <- MPG %>%
+  arrange(desc(MPG)) %>%  
+  head(20)
+top_MPG
+ggplot(top_MPG, aes(model,year)) + geom_point()
+```
+
+```{r}
+#4
+car_Models <- MPG %>%
+  group_by(model) %>%        
+  summarise(count = n()) %>% 
+  arrange(desc(count))  
+car_Models
+```
+
+```{r}
+#4a
+ggplot(car_Models, aes(x = model, y = count)) +
+  geom_bar(stat = "identity", fill = "maroon", color = "lightgreen") +
+  labs(title = "Top 20 Observations", x = "Model", y = "Car Count")
+```
+
+```{r}
+#4b
+ggplot(car_Models, aes(x = model, y = count)) +
+  geom_bar(stat = "identity", fill = "magenta", color = "skyblue") +
+  labs(title = "Top 20 Observations", x = "Model", y = "Car Count") +
+  coord_flip()
+```
+
+```{r}
+#5
+ggplot(MPG, aes(x = displ, y = cyl, color = displ)) + geom_point(size = 3) +  labs(title = "Relationship between No. of Cylinders and Engine Displacement", x = "Number of Cylinders (cyl)", y = "Engine Displacement (displ)")
+#The data shows that the larger engine displacements have generally more cylinders than the other engine displacements.
+```
+
+```{r}
+#6
+ggplot(MPG, aes(x = displ, y = hwy, color = cyl)) +
+  geom_point(size = 3) +  
+  labs(title = "Relationship between Engine Displacement and Highway MPG",
+       x = "Engine Displacement (displ)",
+       y = "Highway MPG (hwy)")
+#The plot shows that as the engine displacement increases the highway miles per gallon generally decreases.
+```
+
+```{r}
+#6.2
+traffic <- read.csv("/cloud/project/worksheet#4/traffic.csv")
+#6.2a
+str(traffic)
+# There are 48120 observations and 4 variables called DateTime, Junction, Vehicles, and ID
+```
+
+```{r}
+#6.2b
+junction <- split(traffic, traffic$Junction)
+```
+
+```{r}
+#6.2c
+traffic$DateTime <- as.POSIXct(traffic$DateTime, format = "%Y-%m-%d %H:%M:%S")
+ggplot(traffic, aes(x = DateTime, y = Vehicles)) +
+  geom_line(color = "blue") +
+  labs(title = "Traffic Volume Over Time at Each Junction",
+       x = "DateTime",
+       y = "Number of Vehicles") +
+  facet_wrap(~ Junction)  
+```
+
+```{r}
+#7
+library(readxl)
+alexa <- read_excel("/cloud/project/worksheet#4/alexa_file.xlsx")
+
+#7a
+str(alexa)
+ncol(alexa)
+# There are 3150 observations and 5 columns in alexa_file
+```
+
+```{r}
+#7b
+library(dplyr)
+print(colnames(alexa))
+
+total_variation <- alexa %>%
+ group_by(variation) %>%
+  summarise(total = n())
+total_variation
+```
+
+```{r}
+#7c
+library("ggplot2")
+ggplot(alexa, aes(x = date, y = variation)) +
+geom_point() + labs(title = "Variations Timeline", x = "Date", y = "Variations", color = "Verified")
+```
+
+```{r}
+#7d
+alexa$date <- as.Date(alexa$date, format = "%d-%b-%y")
+review_count <- alexa %>%
+  group_by(date) %>%
+  summarise(review_count = n())
+ggplot(data = review_count, aes(x = date, y = review_count)) +
+  geom_line(color = "lightgreen", linewidth = 1) +
+  labs(title = "Number of Verified Reviews Over Time", x = "Date", y = "Number of Verified Reviews") +
+  theme_minimal()
+```
+
+```{r}
+#7e
+variation_rates <- alexa %>%
+  group_by(variation) %>%
+  summarise(average_ratings = mean(rating, na.rm = TRUE)) %>%
+  arrange(desc(average_ratings))
+
+
+ggplot(variation_rates, aes(x = reorder(variation, -average_ratings), y = average_ratings)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  coord_flip() +  # Flip coordinates for better readability
+  labs(title = "Average Product Variation Ratings", x = "Variations", y = "Average Rating") +
+  theme_minimal()
+```
+
